@@ -1,10 +1,10 @@
 <template>
-  <section class="about section">
+  <section class="about section" id="about">
     <div class="container">
       <div class="section-header">
         <span class="section-label">// About Me</span>
         <h2 class="section-title">Who I Am</h2>
-        <p class="section-subtitle">A passionate developer who loves building things that live on the internet</p>
+        <p class="section-subtitle">Bridging full-stack software development with scalable cloud architecture and automated DevOps pipelines</p>
       </div>
 
       <div class="about-grid">
@@ -14,21 +14,22 @@
               <span class="terminal-dot red"></span>
               <span class="terminal-dot yellow"></span>
               <span class="terminal-dot green"></span>
-              <span class="terminal-title">about.js</span>
+              <span class="terminal-title">engineer.profile.ts</span>
             </div>
             <div class="about-code">
-              <pre><code><span class="code-keyword">const</span> <span class="code-var">developer</span> = {
+              <pre><code><span class="code-keyword">const</span> <span class="code-var">engineer</span> = {
   <span class="code-key">name</span>: <span class="code-string">"Abderrahmane Fethi"</span>,
-  <span class="code-key">role</span>: <span class="code-string">"Full Stack Developer"</span>,
+  <span class="code-key">role</span>: <span class="code-string">"Full Stack & DevOps / Cloud Engineer"</span>,
+  <span class="code-key">specialty</span>: <span class="code-string">"Cloud Infrastructure (AWS) & DevSecOps"</span>,
   <span class="code-key">location</span>: <span class="code-string">"Morocco 🇲🇦"</span>,
-  <span class="code-key">languages</span>: [<span class="code-string">"Arabic"</span>, <span class="code-string">"French"</span>, <span class="code-string">"English"</span>],
+  <span class="code-key">coreStack</span>: [<span class="code-string">"Terraform"</span>, <span class="code-string">"AWS"</span>, <span class="code-string">"Kubernetes"</span>, <span class="code-string">"Docker"</span>, <span class="code-string">"Go"</span>, <span class="code-string">"Vue.js"</span>],
   <span class="code-key">passions</span>: [
-    <span class="code-string">"Clean Code"</span>,
-    <span class="code-string">"Problem Solving"</span>,
-    <span class="code-string">"User Experience"</span>,
-    <span class="code-string">"Continuous Learning"</span>
+    <span class="code-string">"Scalable Cloud Architecture"</span>,
+    <span class="code-string">"Zero-Downtime CI/CD"</span>,
+    <span class="code-string">"Microservices & Event Brokers"</span>,
+    <span class="code-string">"High Availability & Security"</span>
   ],
-  <span class="code-key">motto</span>: <span class="code-string">"Code, Create, Repeat ♻️"</span>
+  <span class="code-key">motto</span>: <span class="code-string">"Automate, Scale, Deliver 🚀"</span>
 };</code></pre>
             </div>
           </div>
@@ -165,7 +166,6 @@ onMounted(() => {
   color: #E7E7E7;
   background: #1a1a1a;
 }
-/* Keep code block dark for readability even in light mode */
 
 .about-code pre {
   margin: 0;

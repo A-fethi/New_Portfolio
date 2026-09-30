@@ -9,6 +9,8 @@
     <hr class="section-divider" />
     <SkillsSection id="skills" />
     <hr class="section-divider" />
+    <DevOpsPipeline3D id="architecture" />
+    <hr class="section-divider" />
     <ProjectsSection id="projects" />
     <hr class="section-divider" />
     <TimelineSection id="timeline" />
@@ -25,13 +27,14 @@ import NavBar from './components/NavBar.vue'
 import HeroSection from './components/HeroSection.vue'
 import AboutSection from './components/AboutSection.vue'
 import SkillsSection from './components/SkillsSection.vue'
+import DevOpsPipeline3D from './components/DevOpsPipeline3D.vue'
 import ProjectsSection from './components/ProjectsSection.vue'
 import TimelineSection from './components/TimelineSection.vue'
 import ContactSection from './components/ContactSection.vue'
 import FooterSection from './components/FooterSection.vue'
 
 const activeSection = ref('hero')
-const sections = ['hero', 'about', 'skills', 'projects', 'timeline', 'contact']
+const sections = ['hero', 'about', 'skills', 'architecture', 'projects', 'timeline', 'contact']
 
 let observer = null
 

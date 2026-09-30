@@ -1,10 +1,12 @@
 <template>
   <section class="hero">
-    <canvas ref="particleCanvas" class="hero-particles"></canvas>
+    <!-- 3D Three.js WebGL Holographic Background -->
+    <ThreeHeroScene />
+
     <div class="hero-content">
       <div class="hero-badge">
         <span class="badge-dot"></span>
-        <span class="badge-text">Available for opportunities</span>
+        <span class="badge-text">Full Stack & DevOps / Cloud Engineer</span>
       </div>
 
       <h1 class="hero-name">
@@ -26,19 +28,23 @@
       </div>
 
       <p class="hero-description">
-        Crafting modern, scalable web applications from front-end to back-end.
+        Architecting resilient full-stack applications & production cloud infrastructures.
         <br />
-        <span class="text-accent">JavaScript</span> ·
-        <span class="text-accent">Go</span> ·
-        <span class="text-accent">Java</span> ·
-        <span class="text-accent">Vue.js</span> ·
-        <span class="text-accent">Docker</span>
+        <span class="text-accent">AWS ECS & Terraform</span> ·
+        <span class="text-accent">Kubernetes (K3s)</span> ·
+        <span class="text-accent">GitLab CI & Ansible</span> ·
+        <span class="text-accent">Go & Java</span> ·
+        <span class="text-accent">Vue.js</span>
       </p>
 
       <div class="hero-cta">
         <a href="#projects" class="btn btn-primary" @click.prevent="scrollTo('projects')">
-          <span>View My Work</span>
+          <span>View Projects</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#architecture" class="btn btn-secondary-cyber" @click.prevent="scrollTo('architecture')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          <span>DevOps Pipeline</span>
         </a>
         <a href="#contact" class="btn btn-outline" @click.prevent="scrollTo('contact')">
           <span>Get in Touch</span>
@@ -69,19 +75,23 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import ThreeHeroScene from './ThreeHeroScene.vue'
 
-const particleCanvas = ref(null)
 const typingText = ref(null)
-
-let animFrame = null
 let typingTimeout = null
 
 const scrollTo = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 
-// Typing animation
-const titles = ['Full Stack Developer', 'Go & Java Developer', 'Problem Solver', 'DevOps Learner']
+// Typing animation for full stack & cloud/devops
+const titles = [
+  'Full Stack & DevOps Engineer',
+  'Cloud Infrastructure Architect',
+  'AWS & Terraform Specialist',
+  'Kubernetes & Docker Pro',
+  'Go & Java Microservices Developer'
+]
 let titleIndex = 0
 let charIndex = 0
 let isDeleting = false
@@ -112,123 +122,11 @@ const typeEffect = () => {
   }
 }
 
-// Particle system
-const initParticles = () => {
-  const canvas = particleCanvas.value
-  if (!canvas) return
-  const ctx = canvas.getContext('2d')
-
-  let width = window.innerWidth
-  let height = window.innerHeight
-  canvas.width = width
-  canvas.height = height
-
-  const particles = []
-  const particleCount = Math.min(150, Math.floor((width * height) / 8000))
-  let mouseX = width / 2
-  let mouseY = height / 2
-
-  class Particle {
-    constructor() {
-      this.reset()
-    }
-    reset() {
-      this.x = Math.random() * width
-      this.y = Math.random() * height
-      this.size = Math.random() * 2 + 0.5
-      this.speedX = (Math.random() - 0.5) * 0.5
-      this.speedY = (Math.random() - 0.5) * 0.5
-      this.opacity = Math.random() * 0.5 + 0.2
-      // Using orange (30) and olive (65) hues
-      this.hue = Math.random() > 0.5 ? 30 : 65
-    }
-    update() {
-      this.x += this.speedX
-      this.y += this.speedY
-
-      // Mouse attraction
-      const dx = mouseX - this.x
-      const dy = mouseY - this.y
-      const dist = Math.sqrt(dx * dx + dy * dy)
-      if (dist < 200) {
-        this.x += dx * 0.002
-        this.y += dy * 0.002
-        this.opacity = Math.min(1, this.opacity + 0.01)
-      }
-
-      if (this.x < 0 || this.x > width) this.speedX *= -1
-      if (this.y < 0 || this.y > height) this.speedY *= -1
-    }
-    draw() {
-      ctx.beginPath()
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-      ctx.fillStyle = `hsla(${this.hue}, 100%, 50%, ${this.opacity})`
-      ctx.fill()
-    }
-  }
-
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle())
-  }
-
-  const drawConnections = () => {
-    // Determine connection color based on current theme Document
-    const isLightTheme = document.documentElement.getAttribute('data-theme') === 'light';
-    const connectionRGB = isLightTheme ? '217, 114, 0' : '246, 131, 0'; // #d97200 in light, #F68300 in dark
-
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x
-        const dy = particles[i].y - particles[j].y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        if (dist < 120) {
-          const opacity = (1 - dist / 120) * 0.15
-          ctx.beginPath()
-          ctx.moveTo(particles[i].x, particles[i].y)
-          ctx.lineTo(particles[j].x, particles[j].y)
-          ctx.strokeStyle = `rgba(${connectionRGB}, ${opacity})`
-          ctx.lineWidth = 0.5
-          ctx.stroke()
-        }
-      }
-    }
-  }
-
-  const animate = () => {
-    ctx.clearRect(0, 0, width, height)
-    particles.forEach(p => {
-      p.update()
-      p.draw()
-    })
-    drawConnections()
-    animFrame = requestAnimationFrame(animate)
-  }
-
-  animate()
-
-  const handleMouseMove = (e) => {
-    mouseX = e.clientX
-    mouseY = e.clientY
-  }
-
-  const handleResize = () => {
-    width = window.innerWidth
-    height = window.innerHeight
-    canvas.width = width
-    canvas.height = height
-  }
-
-  window.addEventListener('mousemove', handleMouseMove)
-  window.addEventListener('resize', handleResize)
-}
-
 onMounted(() => {
-  initParticles()
   setTimeout(typeEffect, 1000)
 })
 
 onUnmounted(() => {
-  if (animFrame) cancelAnimationFrame(animFrame)
   if (typingTimeout) clearTimeout(typingTimeout)
 })
 </script>
@@ -244,20 +142,11 @@ onUnmounted(() => {
   background: var(--gradient-hero);
 }
 
-.hero-particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
 .hero-content {
   position: relative;
   z-index: 1;
   text-align: center;
-  max-width: 800px;
+  max-width: 860px;
   padding: 0 var(--container-padding);
 }
 
@@ -267,29 +156,32 @@ onUnmounted(() => {
   gap: 8px;
   padding: 8px 20px;
   background: rgba(var(--accent-primary-rgb), 0.08);
-  border: 1px solid rgba(var(--accent-primary-rgb), 0.2);
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.25);
   border-radius: var(--radius-full);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   animation: fadeInUp 0.8s ease forwards;
   opacity: 0;
+  backdrop-filter: blur(8px);
 }
 
 .badge-dot {
   width: 8px;
   height: 8px;
-  background: var(--accent-emerald);
+  background: #80ff72;
   border-radius: 50%;
+  box-shadow: 0 0 10px #80ff72;
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
 .badge-text {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .hero-name {
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(3rem, 8vw, 6.2rem);
   font-weight: 900;
   line-height: 1.05;
   margin-bottom: 20px;
@@ -340,8 +232,9 @@ onUnmounted(() => {
 
 .hero-title-text {
   font-family: var(--font-mono);
-  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-size: clamp(1rem, 2.2vw, 1.45rem);
   color: var(--accent-primary);
+  font-weight: 600;
 }
 
 .typing-cursor {
@@ -356,11 +249,11 @@ onUnmounted(() => {
 }
 
 .hero-description {
-  font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+  font-size: clamp(0.98rem, 1.35vw, 1.15rem);
   color: var(--text-secondary);
   line-height: 1.8;
   margin-bottom: 36px;
-  max-width: 600px;
+  max-width: 660px;
   margin-left: auto;
   margin-right: auto;
   animation: fadeInUp 0.8s ease 1.1s forwards;
@@ -375,6 +268,31 @@ onUnmounted(() => {
   margin-bottom: 40px;
   animation: fadeInUp 0.8s ease 1.3s forwards;
   opacity: 0;
+  flex-wrap: wrap;
+}
+
+.btn-secondary-cyber {
+  background: rgba(97, 104, 8, 0.2);
+  border: 1px solid rgba(97, 104, 8, 0.4);
+  color: var(--text-primary);
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  transition: all var(--transition-base);
+}
+
+.btn-secondary-cyber:hover {
+  background: rgba(97, 104, 8, 0.4);
+  border-color: #80ff72;
+  color: #80ff72;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(128, 255, 114, 0.2);
 }
 
 .hero-socials {
@@ -400,7 +318,6 @@ onUnmounted(() => {
   text-decoration: none;
 }
 
-/* Light theme overrides for social links */
 [data-theme="light"] .social-link {
   background: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.08);
@@ -429,7 +346,7 @@ onUnmounted(() => {
 .scroll-indicator {
   position: absolute;
   bottom: 40px;
-  right: 40px; /* Moved to bottom right */
+  right: 40px;
   display: flex;
   align-items: center;
   gap: 12px;

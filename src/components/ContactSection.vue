@@ -12,7 +12,7 @@
           <div class="contact-card glass-card gradient-border">
             <h3 class="contact-card-title">Let's work together</h3>
             <p class="contact-card-text">
-              I'm currently open to new opportunities as a Full Stack Developer.
+              I'm currently open to new opportunities as a Full Stack & DevOps / Cloud Engineer.
               Whether you have a project, job opportunity, or just want to say hi — feel free to reach out!
             </p>
 

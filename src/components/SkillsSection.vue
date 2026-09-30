@@ -1,28 +1,53 @@
 <template>
-  <section class="skills section">
+  <section class="skills section" id="skills">
     <div class="container">
       <div class="section-header">
-        <span class="section-label">// Tech Stack</span>
-        <h2 class="section-title">Skills & Technologies</h2>
-        <p class="section-subtitle">Technologies I've been working with and continuously learning</p>
+        <span class="section-label">// Technical Arsenal</span>
+        <h2 class="section-title">Skills & Capabilities</h2>
+        <p class="section-subtitle">Deep technical competencies spanning Cloud Infrastructure, CI/CD automation, backend systems, and modern frontend</p>
       </div>
 
-      <div class="skills-grid" ref="skillsGrid">
+      <!-- Quick Category Toggle Pills -->
+      <div class="skill-category-filters">
+        <button
+          class="skill-filter-pill"
+          :class="{ active: activeCategory === 'all' }"
+          @click="filterCategory('all')"
+        >
+          <span>⚡</span>
+          <span>All Domains</span>
+        </button>
+        <button
+          v-for="cat in skills"
+          :key="cat.category"
+          class="skill-filter-pill"
+          :class="{ active: activeCategory === cat.category }"
+          @click="filterCategory(cat.category)"
+        >
+          <span>{{ cat.icon }}</span>
+          <span>{{ cat.category }}</span>
+        </button>
+      </div>
+
+      <!-- Skills Grid with GSAP Stagger Animations -->
+      <div class="skills-grid" ref="skillsGridRef">
         <div
-          v-for="(category, catIndex) in skills"
+          v-for="category in displayedSkills"
           :key="category.category"
           class="skill-card glass-card gradient-border"
           :style="{ '--card-color': category.color }"
-          ref="skillCards"
         >
           <div class="skill-card-header">
             <span class="skill-icon">{{ category.icon }}</span>
-            <h3 class="skill-category">{{ category.category }}</h3>
+            <div class="header-titles">
+              <h3 class="skill-category">{{ category.category }}</h3>
+              <span class="skill-badge-sub">Specialty Level</span>
+            </div>
           </div>
 
           <div class="skill-items">
             <div
-              v-for="(skill, skillIndex) in category.items"
+              v-for="skill in category.items"
               :key="skill.name"
               class="skill-item"
             >
@@ -33,12 +58,11 @@
               <div class="skill-bar">
                 <div
                   class="skill-bar-fill"
+                  :data-fill="`${skill.level}%`"
                   :style="{
-                    '--fill-width': `${skill.level}%`,
                     '--fill-color': category.color,
-                    '--fill-delay': `${(catIndex * 0.2) + (skillIndex * 0.1)}s`
+                    width: `${skill.level}%`
                   }"
-                  ref="skillBars"
                 ></div>
               </div>
             </div>
@@ -50,37 +74,176 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
+import gsap from 'gsap'
 import { skills } from '../data/portfolio.js'
 
-const skillsGrid = ref(null)
-const skillCards = ref([])
-const skillBars = ref([])
+const activeCategory = ref('all')
+const skillsGridRef = ref(null)
+const isAnimating = ref(false)
 
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in')
-          // Animate skill bars
-          const bars = entry.target.querySelectorAll('.skill-bar-fill')
-          bars.forEach(bar => {
-            bar.classList.add('fill-animate')
+const displayedSkills = computed(() => {
+  if (activeCategory.value === 'all') return skills
+  return skills.filter(s => s.category === activeCategory.value)
+})
+
+const filterCategory = (categoryKey) => {
+  if (activeCategory.value === categoryKey || isAnimating.value) return
+  isAnimating.value = true
+
+  const cards = skillsGridRef.value?.querySelectorAll('.skill-card')
+
+  if (!cards || cards.length === 0) {
+    activeCategory.value = categoryKey
+    isAnimating.value = false
+    return
+  }
+
+  // Smooth GSAP exit animation
+  gsap.to(cards, {
+    opacity: 0,
+    y: 18,
+    scale: 0.95,
+    duration: 0.22,
+    stagger: 0.03,
+    ease: 'power2.in',
+    onComplete: () => {
+      activeCategory.value = categoryKey
+
+      nextTick(() => {
+        const newCards = skillsGridRef.value?.querySelectorAll('.skill-card')
+        if (!newCards || newCards.length === 0) {
+          isAnimating.value = false
+          return
+        }
+
+        // Staggered spring entrance
+        gsap.fromTo(
+          newCards,
+          {
+            opacity: 0,
+            y: 28,
+            scale: 0.93
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.45,
+            stagger: 0.06,
+            ease: 'power3.out',
+            onComplete: () => {
+              isAnimating.value = false
+            }
+          }
+        )
+
+        // Smooth progress bar fill sweep
+        const bars = skillsGridRef.value?.querySelectorAll('.skill-bar-fill')
+        if (bars) {
+          bars.forEach((bar) => {
+            const targetWidth = bar.getAttribute('data-fill') || '80%'
+            gsap.fromTo(
+              bar,
+              { width: '0%' },
+              {
+                width: targetWidth,
+                duration: 0.85,
+                ease: 'power2.out',
+                delay: 0.1
+              }
+            )
           })
         }
       })
-    },
-    { threshold: 0.2 }
-  )
+    }
+  })
+}
 
-  document.querySelectorAll('.skill-card').forEach(card => {
-    observer.observe(card)
+onMounted(() => {
+  nextTick(() => {
+    const cards = skillsGridRef.value?.querySelectorAll('.skill-card')
+    if (cards && cards.length > 0) {
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 30, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'power3.out'
+        }
+      )
+    }
+
+    const bars = skillsGridRef.value?.querySelectorAll('.skill-bar-fill')
+    if (bars) {
+      bars.forEach((bar) => {
+        const targetWidth = bar.getAttribute('data-fill') || '80%'
+        gsap.fromTo(
+          bar,
+          { width: '0%' },
+          {
+            width: targetWidth,
+            duration: 1.1,
+            ease: 'power2.out',
+            delay: 0.15
+          }
+        )
+      })
+    }
   })
 })
 </script>
 
 <style scoped>
+.skill-category-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.skill-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+[data-theme="light"] .skill-filter-pill {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.skill-filter-pill:hover {
+  color: var(--text-primary);
+  border-color: rgba(var(--accent-primary-rgb), 0.35);
+  transform: translateY(-2px);
+  background: rgba(var(--accent-primary-rgb), 0.06);
+}
+
+.skill-filter-pill.active {
+  color: var(--accent-primary);
+  background: rgba(var(--accent-primary-rgb), 0.14);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 16px rgba(var(--accent-primary-rgb), 0.25);
+  transform: translateY(-2px);
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -89,19 +252,16 @@ onMounted(() => {
 
 .skill-card {
   padding: 28px;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.skill-card.animate-in {
   opacity: 1;
   transform: translateY(0);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  will-change: transform, opacity;
 }
 
 .skill-card:hover {
   border-color: var(--card-color) !important;
-  box-shadow: 0 8px 30px color-mix(in srgb, var(--card-color) 20%, transparent);
+  box-shadow: 0 12px 35px color-mix(in srgb, var(--card-color) 25%, transparent);
+  transform: translateY(-4px);
 }
 
 .skill-card::before {
@@ -116,31 +276,42 @@ onMounted(() => {
 .skill-card-header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   margin-bottom: 24px;
 }
 
 .skill-icon {
   font-size: 1.8rem;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 [data-theme="light"] .skill-icon {
   background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.header-titles {
+  display: flex;
+  flex-direction: column;
 }
 
 .skill-category {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-primary);
+}
+
+.skill-badge-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
 }
 
 .skill-items {
@@ -177,7 +348,7 @@ onMounted(() => {
 .skill-bar {
   width: 100%;
   height: 6px;
-  background: rgba(255, 255, 255, 0.08); /* slight contrast bump */
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -188,16 +359,10 @@ onMounted(() => {
 
 .skill-bar-fill {
   height: 100%;
-  width: 0;
   background: linear-gradient(90deg, var(--fill-color), color-mix(in srgb, var(--fill-color) 60%, white));
   border-radius: 3px;
-  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-delay: var(--fill-delay);
   position: relative;
-}
-
-.skill-bar-fill.fill-animate {
-  width: var(--fill-width);
+  will-change: width;
 }
 
 .skill-bar-fill::after {

@@ -49,6 +49,7 @@ const isMobileOpen = ref(false)
 const links = [
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
+  { id: 'architecture', label: 'DevOps Pipeline' },
   { id: 'projects', label: 'Projects' },
   { id: 'timeline', label: 'Experience' },
   { id: 'contact', label: 'Contact' }
