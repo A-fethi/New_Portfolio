@@ -32,6 +32,7 @@
   <span class="code-key">motto</span>: <span class="code-string">"Automate, Scale, Deliver 🚀"</span>
 };</code></pre>
             </div>
+
           </div>
         </div>
 
@@ -68,6 +69,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { personalInfo, softSkills } from '../data/portfolio.js'
+import { playClick, playHover } from '../utils/audioSystem.js'
+
 
 const stats = personalInfo.stats
 const aboutText = ref(null)
@@ -249,6 +252,43 @@ onMounted(() => {
 .soft-skill-pill:hover {
   background: rgba(var(--accent-secondary-rgb), 0.15);
   border-color: rgba(var(--accent-secondary-rgb), 0.3);
+  transform: translateY(-2px);
+}
+
+
+.about-cv-row {
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: flex-end;
+}
+
+[data-theme="light"] .about-cv-row {
+  background: rgba(0, 0, 0, 0.03);
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.btn-cv-preview {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(246, 131, 0, 0.12);
+  border: 1px solid rgba(246, 131, 0, 0.3);
+  color: var(--accent-primary);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-cv-preview:hover {
+  background: var(--accent-primary);
+  color: #111;
+  box-shadow: 0 0 14px rgba(246, 131, 0, 0.35);
   transform: translateY(-2px);
 }
 

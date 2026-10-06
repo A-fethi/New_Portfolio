@@ -30,7 +30,7 @@
           <span class="heart">💚</span> using
           <span class="text-accent">Vue.js</span>
         </p>
-        <p class="footer-note text-mono text-muted">v2.1.2</p>
+        <p class="footer-note text-mono text-muted">v2.1.3</p>
       </div>
     </div>
   </footer>

@@ -1,10 +1,10 @@
 <template>
-  <section class="timeline section">
+  <section class="timeline section" id="timeline">
     <div class="container">
       <div class="section-header">
         <span class="section-label">// Journey</span>
         <h2 class="section-title">Experience & Education</h2>
-        <p class="section-subtitle">My professional journey and academic background</p>
+        <p class="section-subtitle">My professional journey, academic background, and DevOps/Cloud specialization</p>
       </div>
 
       <div class="timeline-container">
@@ -36,6 +36,34 @@
           </div>
         </div>
       </div>
+
+      <!-- Verified Cloud Specializations & Certifications Grid -->
+      <div class="certifications-block">
+        <div class="cert-header">
+          <span class="cert-badge-lead">// Verified Competencies</span>
+          <h3 class="cert-title">Certifications & Cloud Specialization Tracks</h3>
+          <p class="cert-subtitle">Formal curriculums and verified project-driven competencies across Cloud, DevOps, and Software Engineering</p>
+        </div>
+
+        <div class="cert-grid">
+          <div
+            v-for="cert in certifications"
+            :key="cert.title"
+            class="cert-card glass-card gradient-border"
+          >
+            <div class="cert-top-row">
+              <span class="cert-icon">{{ cert.icon }}</span>
+              <span class="cert-status-pill text-mono">{{ cert.status }}</span>
+            </div>
+            <h4 class="cert-name">{{ cert.title }}</h4>
+            <span class="cert-issuer">{{ cert.issuer }}</span>
+            <p class="cert-desc">{{ cert.desc }}</p>
+            <div class="cert-tags">
+              <span v-for="tag in cert.tags" :key="tag" class="cert-tag text-mono">{{ tag }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -46,7 +74,6 @@ import { experience, education } from '../data/portfolio.js'
 
 const timelineItems = computed(() => {
   return [...education, ...experience].sort((a, b) => {
-    // Sort by most recent first (rough comparison)
     const getYear = (period) => {
       const match = period.match(/\d{4}/)
       return match ? parseInt(match[0]) : 0
@@ -55,11 +82,61 @@ const timelineItems = computed(() => {
   })
 })
 
+const certifications = [
+  {
+    icon: '☁️',
+    title: 'AWS Cloud Architecture Specialization',
+    issuer: 'Zone01 / AWS Architecture Track',
+    status: 'VERIFIED TRACK',
+    desc: 'Production microservices deployment on ECS Fargate, Multi-AZ VPC design, Application Load Balancers, IAM security, and CloudWatch alarms.',
+    tags: ['AWS ECS', 'Fargate', 'VPC Multi-AZ', 'ALB']
+  },
+  {
+    icon: '📜',
+    title: 'Infrastructure as Code (Terraform)',
+    issuer: 'Zone01 / HashiCorp Track',
+    status: 'VERIFIED TRACK',
+    desc: '100% declarative cloud automation, modular HCL architectures, state locking, and automated multi-environment deployments.',
+    tags: ['Terraform', 'Modular HCL', 'State Locking']
+  },
+  {
+    icon: '☸️',
+    title: 'Kubernetes (K3s) Cluster Orchestration',
+    issuer: 'Zone01 / Kubernetes Track',
+    status: 'VERIFIED TRACK',
+    desc: 'Multi-node container clustering, Traefik ingress routing, rolling updates with zero downtime, liveness/readiness probes, and PVC storage.',
+    tags: ['Kubernetes', 'K3s', 'Traefik', 'PVC']
+  },
+  {
+    icon: '🛡️',
+    title: 'GitLab CI/CD & Ansible Automation',
+    issuer: 'DevOps & Security Engineering',
+    status: 'VERIFIED TRACK',
+    desc: 'Self-hosted GitLab CE and autoscale runners provisioned via Ansible, Trivy SAST container security scans, and automated delivery pipelines.',
+    tags: ['GitLab CI', 'Ansible', 'Trivy SAST', 'DevSecOps']
+  },
+  {
+    icon: '💻',
+    title: 'Full Stack Software Engineering',
+    issuer: 'Zone01 / 01Talent Curriculum',
+    status: 'GRADUATED',
+    desc: 'Intensive peer-to-peer software engineering program covering Go, Java Spring Boot, Vue.js, algorithms, databases, and microservices.',
+    tags: ['Go', 'Spring Boot', 'Vue.js', 'PostgreSQL']
+  },
+  {
+    icon: '🎓',
+    title: 'Frontend Development Specialization',
+    issuer: 'ALX Africa Certificate',
+    status: 'CERTIFIED',
+    desc: 'Comprehensive modern frontend engineering curriculum covering JavaScript ES6+, responsive architectures, web vitals, and UX best practices.',
+    tags: ['JavaScript', 'Web Vitals', 'Responsive UI']
+  }
+]
+
 const timelineLine = ref(null)
 const timelineLineFill = ref(null)
 
 onMounted(() => {
-  // Scroll-triggered reveal
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
@@ -68,14 +145,17 @@ onMounted(() => {
         }
       })
     },
-    { threshold: 0.2 }
+    { threshold: 0.15 }
   )
 
   document.querySelectorAll('.timeline-item').forEach(item => {
     observer.observe(item)
   })
 
-  // Timeline line fill on scroll
+  document.querySelectorAll('.cert-card').forEach(card => {
+    observer.observe(card)
+  })
+
   const handleScroll = () => {
     if (!timelineLine.value || !timelineLineFill.value) return
     const rect = timelineLine.value.getBoundingClientRect()
@@ -98,7 +178,7 @@ onMounted(() => {
 .timeline-container {
   position: relative;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 0 auto 80px;
 }
 
 /* Timeline Line */
@@ -113,7 +193,7 @@ onMounted(() => {
 }
 
 [data-theme="light"] .timeline-line {
-  background: rgba(0, 0, 0, 0.08); /* Darker line in light mode */
+  background: rgba(0, 0, 0, 0.08);
 }
 
 .timeline-line-fill {
@@ -238,6 +318,135 @@ onMounted(() => {
   line-height: 1.7;
 }
 
+/* Certifications Block */
+.certifications-block {
+  margin-top: 60px;
+  padding-top: 50px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .certifications-block {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.cert-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.cert-badge-lead {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent-primary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.cert-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.cert-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.cert-card {
+  padding: 24px;
+  border-radius: var(--radius-md);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.cert-card.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cert-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(246, 131, 0, 0.15);
+  border-color: rgba(var(--accent-primary-rgb), 0.4);
+}
+
+.cert-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cert-icon {
+  font-size: 1.8rem;
+}
+
+.cert-status-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(128, 255, 114, 0.12);
+  color: #80ff72;
+  border: 1px solid rgba(128, 255, 114, 0.25);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.cert-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.cert-issuer {
+  font-size: 0.8rem;
+  color: var(--accent-primary);
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.cert-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.cert-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cert-tag {
+  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+[data-theme="light"] .cert-tag {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
 @media (max-width: 768px) {
   .timeline-line {
     left: 20px;
@@ -264,5 +473,64 @@ onMounted(() => {
     transform: translateX(-20px);
     flex-direction: row;
   }
+
+  .cert-grid {
+    grid-template-columns: 1fr;
+  }
 }
+
+[data-theme="light"] .timeline-content {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .timeline-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .timeline-desc {
+  color: #334155;
+  font-weight: 450;
+}
+
+[data-theme="light"] .cert-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .cert-card:hover {
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .cert-name {
+  color: #0f172a;
+}
+
+[data-theme="light"] .cert-issuer {
+  color: var(--text-accent);
+  font-weight: 700;
+}
+
+[data-theme="light"] .cert-desc {
+  color: #334155;
+  font-weight: 450;
+}
+
+[data-theme="light"] .cert-status-pill {
+  background: rgba(22, 163, 74, 0.12);
+  color: #15803d;
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  font-weight: 700;
+}
+
+[data-theme="light"] .cert-tag {
+  background: #f1f5f9;
+  border-color: rgba(15, 23, 42, 0.1);
+  color: #334155;
+  font-weight: 600;
+}
+
 </style>

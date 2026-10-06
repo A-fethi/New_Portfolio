@@ -2,7 +2,10 @@
   <div id="portfolio-app">
     <div class="noise-overlay"></div>
     <CustomCursor />
-    <NavBar :activeSection="activeSection" @navigate="scrollToSection" />
+    <NavBar
+      :activeSection="activeSection"
+      @navigate="scrollToSection"
+    />
     <HeroSection id="hero" />
     <hr class="section-divider" />
     <AboutSection id="about" />
@@ -17,6 +20,7 @@
     <hr class="section-divider" />
     <ContactSection id="contact" />
     <FooterSection />
+    <CloudShellTerminal />
   </div>
 </template>
 
@@ -32,6 +36,7 @@ import ProjectsSection from './components/ProjectsSection.vue'
 import TimelineSection from './components/TimelineSection.vue'
 import ContactSection from './components/ContactSection.vue'
 import FooterSection from './components/FooterSection.vue'
+import CloudShellTerminal from './components/CloudShellTerminal.vue'
 
 const activeSection = ref('hero')
 const sections = ['hero', 'about', 'skills', 'architecture', 'projects', 'timeline', 'contact']

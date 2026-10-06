@@ -15,6 +15,7 @@
           class="filter-btn"
           :class="{ active: currentFilter === filter.key }"
           @click="filterProjects(filter.key)"
+          @mouseenter="playHover"
         >
           <span class="filter-icon">{{ filter.icon }}</span>
           <span>{{ filter.label }}</span>
@@ -113,6 +114,7 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import gsap from 'gsap'
 import { projects } from '../data/portfolio.js'
 import ProjectArchitectureModal from './ProjectArchitectureModal.vue'
+import { playClick, playHover } from '../utils/audioSystem.js'
 
 const hoveredProjectKey = ref(null)
 const currentFilter = ref('all')
@@ -138,6 +140,7 @@ const getFilterCount = (key) => {
 }
 
 const openArchitecture = (project) => {
+  playClick()
   selectedArchitectureProject.value = project
 }
 
@@ -146,6 +149,7 @@ const closeArchitecture = () => {
 }
 
 const filterProjects = (filterKey) => {
+  playClick()
   if (currentFilter.value === filterKey || isAnimating.value) return
   isAnimating.value = true
 
@@ -386,15 +390,31 @@ onMounted(() => {
 }
 
 .category-pill.devops {
-  background: rgba(246, 131, 0, 0.12);
+  background: rgba(var(--accent-primary-rgb), 0.12);
   color: var(--accent-primary);
-  border: 1px solid rgba(246, 131, 0, 0.25);
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
+  font-weight: 600;
 }
 
 .category-pill.fullstack {
-  background: rgba(97, 104, 8, 0.15);
-  color: #80ff72;
-  border: 1px solid rgba(97, 104, 8, 0.3);
+  background: rgba(var(--accent-secondary-rgb), 0.15);
+  color: var(--accent-secondary);
+  border: 1px solid rgba(var(--accent-secondary-rgb), 0.3);
+  font-weight: 600;
+}
+
+[data-theme="light"] .category-pill.devops {
+  background: rgba(var(--accent-primary-rgb), 0.12);
+  color: var(--text-accent);
+  border-color: rgba(var(--accent-primary-rgb), 0.35);
+  font-weight: 700;
+}
+
+[data-theme="light"] .category-pill.fullstack {
+  background: rgba(var(--accent-secondary-rgb), 0.12);
+  color: var(--accent-secondary);
+  border-color: rgba(var(--accent-secondary-rgb), 0.35);
+  font-weight: 700;
 }
 
 .project-icon {
@@ -542,4 +562,75 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
 }
+
+[data-theme="light"] .project-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .project-card:hover {
+  background: #ffffff !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .project-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .project-subtitle {
+  color: var(--text-accent);
+  font-weight: 600;
+}
+
+[data-theme="light"] .project-desc {
+  color: #334155;
+  font-weight: 450;
+}
+
+[data-theme="light"] .filter-btn {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #334155;
+}
+
+[data-theme="light"] .filter-btn:hover {
+  background: rgba(var(--accent-primary-rgb), 0.08);
+  border-color: var(--accent-primary);
+  color: #0f172a;
+}
+
+[data-theme="light"] .filter-btn.active {
+  background: rgba(var(--accent-primary-rgb), 0.12);
+  border-color: var(--accent-primary);
+  color: var(--text-accent);
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(var(--accent-primary-rgb), 0.2);
+}
+
+[data-theme="light"] .btn-arch-trigger {
+  background: rgba(var(--accent-primary-rgb), 0.1);
+  border: 1.5px solid rgba(var(--accent-primary-rgb), 0.35);
+  color: var(--text-accent);
+  font-weight: 700;
+}
+
+[data-theme="light"] .btn-arch-trigger:hover {
+  background: var(--accent-primary) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .project-link {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #334155;
+  font-weight: 600;
+}
+
+[data-theme="light"] .project-link:hover {
+  background: rgba(var(--accent-primary-rgb), 0.08);
+  border-color: var(--accent-primary);
+  color: var(--text-accent);
+}
+
 </style>

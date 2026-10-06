@@ -7,7 +7,8 @@ export const personalInfo = {
   linkedin: 'https://linkedin.com/in/abderrahmane-fethi',
   github: 'https://github.com/A-fethi',
   bio: `Results-driven Full Stack Engineer & Cloud/DevOps Specialist with proven expertise in building modern distributed web applications and production-grade cloud infrastructure. Proficient in designing scalable microservices (Go, Java Spring Boot, Vue.js), provisioning automated multi-cloud architectures with Terraform & AWS (ECS Fargate, ALB, VPC), containerizing with Docker & Kubernetes (K3s), and engineering resilient CI/CD pipelines with GitLab & Ansible. Committed to high performance, reliability, and clean engineering.`,
-  resumeUrl: '#',
+  resumeUrl: 'https://raw.githubusercontent.com/A-fethi/New_Portfolio/main/public/Abderrahmane_FETHI_CV.pdf', // External CV download URL
+  resumeDownloadName: 'Abderrahmane_FETHI_CV.pdf',
   stats: [
     { label: 'Projects Engineered', value: 12, suffix: '+' },
     { label: 'Tech & Cloud Tools', value: 22, suffix: '+' },
@@ -20,7 +21,7 @@ export const skills = [
   {
     category: 'Cloud & Infrastructure',
     icon: '☁️',
-    color: '#F68300', // Neon Orange
+    color: 'var(--accent-primary)', // Dynamic Primary
     items: [
       { name: 'AWS (ECS Fargate, ALB, VPC, CloudWatch)', level: 88 },
       { name: 'Terraform (IaC Automation)', level: 90 },
@@ -32,7 +33,7 @@ export const skills = [
   {
     category: 'CI/CD & DevSecOps',
     icon: '🛡️',
-    color: '#d9740a', // Warm Orange
+    color: 'var(--accent-warm)', // Dynamic Warm
     items: [
       { name: 'GitLab CI/CD & Runners', level: 90 },
       { name: 'Ansible (Infrastructure Automation)', level: 88 },
@@ -44,7 +45,7 @@ export const skills = [
   {
     category: 'Back-End & Microservices',
     icon: '⚙️',
-    color: '#616808', // Olive Accent
+    color: 'var(--accent-secondary)', // Dynamic Secondary
     items: [
       { name: 'Go (Golang)', level: 88 },
       { name: 'Java (Spring Boot)', level: 85 },
@@ -56,7 +57,7 @@ export const skills = [
   {
     category: 'Front-End Engineering',
     icon: '🎨',
-    color: '#F68300', // Orange
+    color: 'var(--accent-primary)', // Dynamic Primary
     items: [
       { name: 'Vue.js 3', level: 88 },
       { name: 'Angular & Angular Material', level: 80 },
@@ -68,7 +69,7 @@ export const skills = [
   {
     category: 'Databases & Storage',
     icon: '🗄️',
-    color: '#6d7a0a', // Light Olive
+    color: 'var(--accent-emerald)', // Dynamic Emerald
     items: [
       { name: 'PostgreSQL', level: 88 },
       { name: 'SQLite', level: 85 },
@@ -79,7 +80,7 @@ export const skills = [
   {
     category: 'Networking & Gateways',
     icon: '🔗',
-    color: '#8a4b00', // Amber
+    color: 'var(--accent-secondary)', // Dynamic Secondary
     items: [
       { name: 'RESTful APIs & GraphQL', level: 90 },
       { name: 'API Gateway Architecture', level: 86 },

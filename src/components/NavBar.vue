@@ -15,6 +15,7 @@
           class="nav-link"
           :class="{ active: activeSection === link.id }"
           @click.prevent="navigate(link.id)"
+          @mouseenter="playHover"
         >
           {{ link.label }}
           <span class="nav-link-indicator"></span>
@@ -22,6 +23,19 @@
       </div>
 
       <div class="nav-actions">
+        <a
+          :href="personalInfo.resumeUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          download="Abderrahmane_FETHI_CV.pdf"
+          class="nav-resume-btn"
+          @click="playClick"
+          @mouseenter="playHover"
+          title="Download Resume / CV (PDF)"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>CV</span>
+        </a>
         <ThemeToggle />
         <button class="nav-toggle" @click="isMobileOpen = !isMobileOpen" :class="{ open: isMobileOpen }">
           <span></span>
@@ -35,7 +49,9 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { personalInfo } from '../data/portfolio.js'
 import ThemeToggle from './ThemeToggle.vue'
+import { playClick, playHover } from '../utils/audioSystem.js'
 
 const props = defineProps({
   activeSection: String
@@ -56,10 +72,10 @@ const links = [
 ]
 
 const navigate = (id) => {
+  playClick()
   emit('navigate', id)
   isMobileOpen.value = false
 }
-
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 100
 }
@@ -179,6 +195,31 @@ onUnmounted(() => {
   gap: 12px;
 }
 
+
+.nav-resume-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(var(--accent-primary-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
+  color: var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.nav-resume-btn:hover {
+  background: var(--accent-primary);
+  color: #111;
+  box-shadow: 0 0 14px rgba(var(--accent-primary-rgb), 0.35);
+  transform: translateY(-2px);
+}
+
 /* Mobile Toggle */
 .nav-toggle {
   display: none;
@@ -243,4 +284,39 @@ onUnmounted(() => {
     padding: 12px 32px;
   }
 }
+
+[data-theme="light"] .navbar-visible {
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .nav-link {
+  color: #334155;
+  font-weight: 600;
+}
+
+[data-theme="light"] .nav-link:hover {
+  color: #0f172a;
+  background: rgba(var(--accent-primary-rgb), 0.08);
+}
+
+[data-theme="light"] .nav-link.active {
+  color: var(--accent-primary);
+  background: rgba(var(--accent-primary-rgb), 0.12);
+  font-weight: 700;
+}
+
+[data-theme="light"] .nav-resume-btn {
+  background: rgba(var(--accent-primary-rgb), 0.08);
+  border: 1.5px solid rgba(var(--accent-primary-rgb), 0.35);
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+[data-theme="light"] .nav-resume-btn:hover {
+  background: var(--accent-primary);
+  color: #ffffff;
+}
+
 </style>

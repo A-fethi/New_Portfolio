@@ -322,10 +322,51 @@ const animate = () => {
   animFrameId = requestAnimationFrame(animate)
 }
 
+
+const paletteColorMap = {
+  'cyber-cloud': {
+    primary: 0x00F0FF,
+    secondary: 0x6366F1,
+    accent: 0x38BDF8
+  },
+  'sunset-hyperdrive': {
+    primary: 0xFF5E00,
+    secondary: 0x0284C7,
+    accent: 0xF59E0B
+  },
+  'devsecops-emerald': {
+    primary: 0x10B981,
+    secondary: 0x06B6D4,
+    accent: 0x34D399
+  },
+  'classic-orange': {
+    primary: 0xF68300,
+    secondary: 0x616808,
+    accent: 0xD9740A
+  }
+}
+
+const updatePaletteColors = (paletteId) => {
+  const p = paletteColorMap[paletteId] || paletteColorMap['cyber-cloud']
+  if (outerWireframe && outerWireframe.material) outerWireframe.material.color.setHex(p.primary)
+  if (innerIcosahedron && innerIcosahedron.material) {
+    innerIcosahedron.material.color.setHex(p.secondary)
+    innerIcosahedron.material.emissive.setHex(p.secondary)
+  }
+  if (pointLight1) pointLight1.color.setHex(p.primary)
+  if (pointLight2) pointLight2.color.setHex(p.secondary)
+  if (ring1 && ring1.material) ring1.material.color.setHex(p.primary)
+  if (ring2 && ring2.material) ring2.material.color.setHex(p.secondary)
+  if (ring3 && ring3.material) ring3.material.color.setHex(p.accent)
+}
+
 let observer = null
 
 onMounted(() => {
   initThree()
+  const currentPal = localStorage.getItem('portfolio-palette') || 'cyber-cloud'
+  updatePaletteColors(currentPal)
+  window.addEventListener('palette-change', (e) => updatePaletteColors(e.detail))
 
   // Conserve battery & CPU using IntersectionObserver
   observer = new IntersectionObserver(([entry]) => {

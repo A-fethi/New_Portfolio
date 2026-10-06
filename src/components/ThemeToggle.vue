@@ -26,6 +26,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { playClick } from '../utils/audioSystem.js'
 
 const isDark = ref(true)
 
@@ -35,6 +36,7 @@ const applyTheme = (dark) => {
 }
 
 const toggleTheme = () => {
+  playClick()
   const newDark = !isDark.value
   applyTheme(newDark)
   localStorage.setItem('portfolio-theme', newDark ? 'dark' : 'light')

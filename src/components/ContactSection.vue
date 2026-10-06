@@ -242,12 +242,22 @@ const cancelOTP = () => {
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: start;
+  gap: 36px;
+  align-items: stretch;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .contact-card {
-  padding: 32px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
 }
 
 .contact-card-title {
@@ -270,7 +280,8 @@ const cancelOTP = () => {
 .contact-links {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  margin-top: auto;
 }
 
 .contact-link-item {
@@ -329,7 +340,24 @@ const cancelOTP = () => {
 
 /* Form */
 .contact-form {
-  padding: 32px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.contact-form .form-group:last-of-type {
+  margin-bottom: 24px;
+}
+
+.btn-submit {
+  margin-top: auto;
 }
 
 .form-group {

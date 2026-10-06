@@ -25,7 +25,7 @@
             <button
               class="tab-btn"
               :class="{ active: activeTab === 'diagram' }"
-              @click="activeTab = 'diagram'"
+              @click="activeTab = 'diagram'; playClick()"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
               <span>Topology Diagram</span>
@@ -386,7 +386,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { playClick, playModalOpen, playModalClose } from '../utils/audioSystem.js'
 
 const props = defineProps({
   project: {
@@ -401,6 +402,7 @@ const activeTab = ref('diagram')
 const copied = ref(false)
 
 const copySnippet = () => {
+  playClick()
   if (!props.project) return
   const text = getCodeSnippet(props.project.title)
   navigator.clipboard?.writeText(text).then(() => {
@@ -644,18 +646,18 @@ service:
   }
 }
 
-import { watch } from 'vue'
-
 watch(
   () => props.project,
   (val) => {
     if (val) {
+      playModalOpen()
       document.body.style.overflow = 'hidden'
     } else {
+      playModalClose()
       document.body.style.overflow = ''
     }
   },
-  { immediate: true }
+  { immediate: false }
 )
 
 // Handle ESC key to close
@@ -1287,4 +1289,57 @@ onUnmounted(() => {
 .modal-fade-enter-from .architecture-modal {
   transform: scale(0.9) translateY(20px);
 }
+
+[data-theme="light"] .decision-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .decision-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .decision-desc {
+  color: #334155;
+  font-weight: 450;
+}
+
+[data-theme="light"] .decision-impact {
+  background: rgba(var(--accent-primary-rgb), 0.06);
+  border-left-color: var(--accent-primary);
+}
+
+[data-theme="light"] .impact-text {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+[data-theme="light"] .tab-btn {
+  color: #334155;
+}
+
+[data-theme="light"] .tab-btn.active {
+  color: var(--accent-primary);
+  background: rgba(var(--accent-primary-rgb), 0.12);
+  border-color: var(--accent-primary);
+  font-weight: 700;
+}
+
+[data-theme="light"] .diagram-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .diagram-lead {
+  color: #334155;
+}
+
+[data-theme="light"] .node-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .node-sub {
+  color: #64748b;
+}
+
 </style>

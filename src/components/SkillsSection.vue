@@ -13,6 +13,7 @@
           class="skill-filter-pill"
           :class="{ active: activeCategory === 'all' }"
           @click="filterCategory('all')"
+          @mouseenter="playHover"
         >
           <span>⚡</span>
           <span>All Domains</span>
@@ -23,6 +24,7 @@
           class="skill-filter-pill"
           :class="{ active: activeCategory === cat.category }"
           @click="filterCategory(cat.category)"
+          @mouseenter="playHover"
         >
           <span>{{ cat.icon }}</span>
           <span>{{ cat.category }}</span>
@@ -77,6 +79,7 @@
 import { ref, computed, onMounted, nextTick } from 'vue'
 import gsap from 'gsap'
 import { skills } from '../data/portfolio.js'
+import { playClick, playHover } from '../utils/audioSystem.js'
 
 const activeCategory = ref('all')
 const skillsGridRef = ref(null)
@@ -88,6 +91,7 @@ const displayedSkills = computed(() => {
 })
 
 const filterCategory = (categoryKey) => {
+  playClick()
   if (activeCategory.value === categoryKey || isAnimating.value) return
   isAnimating.value = true
 
@@ -387,4 +391,58 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
 }
+
+[data-theme="light"] .skill-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .skill-card:hover {
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .skill-category {
+  color: #0f172a;
+}
+
+[data-theme="light"] .skill-badge-sub {
+  color: #64748b;
+}
+
+[data-theme="light"] .skill-name {
+  color: #334155;
+  font-weight: 500;
+}
+
+[data-theme="light"] .skill-level {
+  color: var(--text-accent);
+  font-weight: 700;
+}
+
+[data-theme="light"] .skill-bar {
+  background: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .skill-filter-pill {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #334155;
+}
+
+[data-theme="light"] .skill-filter-pill:hover {
+  background: rgba(var(--accent-primary-rgb), 0.08);
+  border-color: var(--accent-primary);
+  color: #0f172a;
+}
+
+[data-theme="light"] .skill-filter-pill.active {
+  background: rgba(var(--accent-primary-rgb), 0.12);
+  border-color: var(--accent-primary);
+  color: var(--text-accent);
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(var(--accent-primary-rgb), 0.2);
+}
+
 </style>
