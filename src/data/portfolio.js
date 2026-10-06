@@ -7,8 +7,8 @@ export const personalInfo = {
   linkedin: 'https://linkedin.com/in/abderrahmane-fethi',
   github: 'https://github.com/A-fethi',
   bio: `Results-driven Full Stack Engineer & Cloud/DevOps Specialist with proven expertise in building modern distributed web applications and production-grade cloud infrastructure. Proficient in designing scalable microservices (Go, Java Spring Boot, Vue.js), provisioning automated multi-cloud architectures with Terraform & AWS (ECS Fargate, ALB, VPC), containerizing with Docker & Kubernetes (K3s), and engineering resilient CI/CD pipelines with GitLab & Ansible. Committed to high performance, reliability, and clean engineering.`,
-  resumeUrl: 'https://raw.githubusercontent.com/A-fethi/New_Portfolio/main/public/Abderrahmane_FETHI_CV.pdf', // External CV download URL
-  resumeDownloadName: 'Abderrahmane_FETHI_CV.pdf',
+  resumeUrl: 'https://raw.githubusercontent.com/A-fethi/New_Portfolio/main/public/Fethi_Abderrahmane_DevOps.pdf', // External CV download URL
+  resumeDownloadName: 'Fethi_Abderrahmane_DevOps.pdf',
   stats: [
     { label: 'Projects Engineered', value: 12, suffix: '+' },
     { label: 'Tech & Cloud Tools', value: 22, suffix: '+' },

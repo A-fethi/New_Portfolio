@@ -27,7 +27,7 @@
           :href="personalInfo.resumeUrl"
           target="_blank"
           rel="noopener noreferrer"
-          download="Abderrahmane_FETHI_CV.pdf"
+          download="Fethi_Abderrahmane_DevOps.pdf"
           class="nav-resume-btn"
           @click="playClick"
           @mouseenter="playHover"
